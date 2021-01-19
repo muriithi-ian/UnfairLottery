@@ -20,7 +20,7 @@ public class UnfairLottery {
         System.out.println("Welcome to the Unfair Lottery\nPlease enter the prizes separated by a comma:");
         Scanner scanner = new Scanner(System.in);
         prizesInput = scanner.nextLine();
-//        prizesInput = "100,800,200,500,400,1000 ";
+//        prizesInput = "100,800,200,500,400,1000 ,100, 100, 100";
         System.out.println("Enter the contestants names separated by a comma:");
         names = scanner.nextLine();
 //        names = "Joshua,Mahesh,Lilian";
@@ -60,15 +60,18 @@ public class UnfairLottery {
             prizesList.remove(0);
         }
 //        second round of distribution
-//        check whether prizes remain
-        while (prizesList.size() > 0) {
-//            ensure sum of prize will be less than or equal to average
+//        If there re still prizes to allocate,
+//        assign the highest price from  low to high
+//        except the highest provided the sum does not exceed the sum Of the First Value
+        Integer tmpSum = 0;
+        Integer sumOfFirstValue = prizesOutput.get(0)[0];
+        while (prizesList.size() > 0 && tmpSum < sumOfFirstValue) {
             Integer lastSum = 0;
-            for (int i = 0; i < prizesOutput.size(); i++) {
-                Integer tmpSum = 0;
+            for (int i = prizesOutput.size() - 1; i > 0 && prizesList.size() > 0; i--) {
                 for (int j = 0; j < prizesOutput.get(i).length; j++) {
-                    tmpSum = prizesOutput.get(i)[j] + prizesList.get(0);
-                    if (tmpSum <= averagePrize) {
+                    tmpSum = 0;
+                    tmpSum = calculateTmpSum(prizesOutput, i, prizesList.get(0));
+                    if (tmpSum <= sumOfFirstValue) {
 
                         Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
                         toSet[prizesOutput.get(i).length] = prizesList.get(0);
@@ -78,8 +81,20 @@ public class UnfairLottery {
                         break;
                     }
                 }
-
                 System.out.println();
+            }
+        }
+//                final round of distribution
+//                assign remaining prizes from low to high until none remain
+        while (prizesList.size() > 0) {
+            for (int i = prizesOutput.size() - 1; i >= 0 && prizesList.size() > 0; i--) {
+                for (int j = 0; j < prizesOutput.get(i).length; j++) {
+                    Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
+                    toSet[prizesOutput.get(i).length] = prizesList.get(0);
+                    prizesOutput.set(i, toSet);
+                    prizesList.remove(0);
+                    break;
+                }
             }
         }
 
@@ -99,6 +114,15 @@ public class UnfairLottery {
             result[i] = Integer.parseInt(s[i]);
         }
         return result;
+    }
+
+    public static Integer calculateTmpSum(ArrayList<Integer[]> items, int currentItemArray, Integer currentPrice) {
+        int sum = currentPrice;
+        for (int j = 0; j < items.get(currentItemArray).length; j++) {
+            sum += items.get(currentItemArray)[j];
+        }
+
+        return sum;
     }
 
 }
