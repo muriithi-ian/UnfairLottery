@@ -3,7 +3,6 @@ package lottery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Scanner;
 
 public class UnfairLottery {
     public static void main(String[] args) {
@@ -17,14 +16,14 @@ public class UnfairLottery {
 
 
 //        prompt user to enter prizes and contestants
-        System.out.println("Welcome to the Unfair Lottery\nPlease enter the prizes separated by a comma:");
-        Scanner scanner = new Scanner(System.in);
-        prizesInput = scanner.nextLine();
-//        prizesInput = "100,800,200,500,400,1000 ,100, 100, 100";
-        System.out.println("Enter the contestants names separated by a comma:");
-        names = scanner.nextLine();
-//        names = "Joshua,Mahesh,Lilian";
-        scanner.close();
+//        System.out.println("Welcome to the Unfair Lottery\nPlease enter the prizes separated by a comma:");
+//        Scanner scanner = new Scanner(System.in);
+//        prizesInput = scanner.nextLine();
+        prizesInput = " 1100, 700, 300, 70,1000, 100, 700, 250, 80,900, 200, 600, 300, 100, 30,800, 300, 600, 300, 100, 20,800, 300, 400, 400, 120, 50,750, 350, 400, 400, 100, 50";
+//        System.out.println("Enter the contestants names separated by a comma:");
+//        names = scanner.nextLine();
+        names = "One,Two,Three,Four,Five,Six,Seven";
+//        scanner.close();
 
 
 //        System.out.println(prizesInput);
@@ -67,27 +66,28 @@ public class UnfairLottery {
         Integer sumOfFirstValue = prizesOutput.get(0)[0];
         while (prizesList.size() > 0 && tmpSum < sumOfFirstValue) {
             Integer lastSum = 0;
-            for (int i = prizesOutput.size() - 1; i > 0 && prizesList.size() > 0; i--) {
-                for (int j = 0; j < prizesOutput.get(i).length; j++) {
-                    tmpSum = 0;
-                    tmpSum = calculateTmpSum(prizesOutput, i, prizesList.get(0));
-                    if (tmpSum <= sumOfFirstValue) {
-
-                        Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
-                        toSet[prizesOutput.get(i).length] = prizesList.get(0);
-                        prizesOutput.set(i, toSet);
-                        prizesList.remove(0);
+            for (int k = 0; k < prizesList.size(); k++) {
+                for (int i = prizesOutput.size() - 1; i > 0 && prizesList.size() > 0; i--) {
+                    for (int j = 0; j < prizesOutput.get(i).length; j++) {
+                        tmpSum = 0;
+                        tmpSum = calculateTmpSum(prizesOutput, i, prizesList.get(k));
+                        if (tmpSum <= sumOfFirstValue) {
+                            Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
+                            toSet[prizesOutput.get(i).length] = prizesList.get(k);
+                            prizesOutput.set(i, toSet);
+                            prizesList.remove(k);
 //                        System.out.print(" $ " + prizesOutput.get(i)[j]);
-                        break;
+                            break;
+                        }
+
                     }
                 }
-                System.out.println();
             }
         }
 //                final round of distribution
 //                assign remaining prizes from low to high until none remain
         while (prizesList.size() > 0) {
-            for (int i = prizesOutput.size() - 1; i >= 0 && prizesList.size() > 0; i--) {
+            for (int i = 0; i < prizesOutput.size()  && prizesList.size() > 0; i++) {
                 for (int j = 0; j < prizesOutput.get(i).length; j++) {
                     Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
                     toSet[prizesOutput.get(i).length] = prizesList.get(0);
@@ -103,7 +103,8 @@ public class UnfairLottery {
             System.out.print(namesArray[i] + ": ");
             for (int j = 0; j < prizesOutput.get(i).length; j++)
                 System.out.print("$" + prizesOutput.get(i)[j] + " ");
-            System.out.println();
+
+            System.out.println(" | sum: " + calculateTmpSum(prizesOutput, i, 0));
         }
 //end of main
     }
