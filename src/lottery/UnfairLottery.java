@@ -89,14 +89,13 @@ public class UnfairLottery {
             }
         }
 //                final round of distribution
-//                Check if prizes remain
         while (prizesList.size() > 0) {
 //            get an array  with sum of prizes for each winner
            sumOfPrizesArray = populateSumofPrizesArray(prizesOutput, prizesList, sumOfPrizesArray);
 //           get the winner with the least prize
            int minValue = Collections.min(sumOfPrizesArray);
            int indexOfMin = sumOfPrizesArray.indexOf(minValue);
-//           System.out.println("The min value is: "+ minValue+" and it's index is: "+ indexOfMin);
+           System.out.println("The min value is: "+ minValue+" and it's index is: "+ indexOfMin);
 //            Assign the largest prize to the winner with the least prize
         Integer[] toSet = Arrays.copyOf(prizesOutput.get(indexOfMin), prizesOutput.get(indexOfMin).length + 1);
         toSet[prizesOutput.get(indexOfMin).length] = prizesList.get(0);
@@ -145,3 +144,6 @@ public static ArrayList<Integer> populateSumofPrizesArray(ArrayList<Integer[]> p
     return sumOfPrizesArray;
 }
 }
+
+// 1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19
+// One,Two,Three,Four,Five,Six,Seven, Eight, Nine
