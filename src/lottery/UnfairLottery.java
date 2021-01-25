@@ -62,32 +62,7 @@ public class UnfairLottery {
 //            remove assigned prize from prizelist
             prizesList.remove(0);
         }
-//        second round of distribution
-//        If there are still prizes to allocate,
-//        assign the highest price to the winners
-//        except the highest provided the sum does not exceed the sum Of the First winner
-        Integer tmpSum = 0;
-        Integer sumOfFirstValue = prizesOutput.get(0)[0];
-        while (prizesList.size() > 0 && tmpSum < sumOfFirstValue) {
-            Integer lastSum = 0;
-            for (int k = 0; k < prizesList.size(); k++) {
-                for (int i = prizesOutput.size() - 1; i > 0 && prizesList.size() > 0; i--) {
-                    for (int j = 0; j < prizesOutput.get(i).length; j++) {
-                        tmpSum = 0;
-                        tmpSum = calculateTmpSum(prizesOutput, i, prizesList.get(k));
-                        if (tmpSum <= sumOfFirstValue) {
-                            Integer[] toSet = Arrays.copyOf(prizesOutput.get(i), prizesOutput.get(i).length + 1);
-                            toSet[prizesOutput.get(i).length] = prizesList.get(k);
-                            prizesOutput.set(i, toSet);
-                            prizesList.remove(k);
-//                        System.out.print(" $ " + prizesOutput.get(i)[j]);
-                            break;
-                        }
-
-                    }
-                }
-            }
-        }
+//
 //                final round of distribution
         while (prizesList.size() > 0) {
 //            get an array  with sum of prizes for each winner
@@ -135,8 +110,7 @@ public class UnfairLottery {
 public static ArrayList<Integer> populateSumofPrizesArray(ArrayList<Integer[]> prizesOutput, ArrayList<Integer> prizesList,ArrayList<Integer> sumOfPrizesArray ){
     Integer sumOfPrizes;
     for (int i = 0; i < prizesOutput.size()  && prizesList.size() > 0; i++) {
-        for (int j = 0; j < prizesOutput.get(i).length; j++) {
-            sumOfPrizes =0;
+        for (int j = 0; j < prizesOutput.get(i).length; j++){
             sumOfPrizes = calculateTmpSum(prizesOutput, i, 0);
             sumOfPrizesArray.set(i, sumOfPrizes);
         }
