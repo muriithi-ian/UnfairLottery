@@ -37,19 +37,14 @@ public class UnfairLottery {
 
         String[] tempPrizesArray = prizesInput.replaceAll("\\s", "").split(delimiters);
         int[] prizesArray = StringArrToIntArr(tempPrizesArray);
+//        get sum of prizes
         for (int prize : prizesArray) {
             prizesList.add(prize);
             totalPrize += prize;
         }
-
-        for (int prize : prizesList) {
-            System.out.print(prize + " ");
-        }
-
-
+//        get average of prizes
         averagePrize = totalPrize / namesArray.length;
 
-        System.out.println("\n" + averagePrize + " -ave prize\n" + namesArray.length + " :num of pple");
 
         //first round distribution
 //        sort prizelist in descending order to assign the highest values first
@@ -66,16 +61,15 @@ public class UnfairLottery {
 //                final round of distribution
         while (prizesList.size() > 0) {
 //            get an array  with sum of prizes for each winner
-           sumOfPrizesArray = populateSumofPrizesArray(prizesOutput, prizesList, sumOfPrizesArray);
+            sumOfPrizesArray = populateSumofPrizesArray(prizesOutput, prizesList, sumOfPrizesArray);
 //           get the winner with the least prize
-           int minValue = Collections.min(sumOfPrizesArray);
-           int indexOfMin = sumOfPrizesArray.indexOf(minValue);
-           System.out.println("The min value is: "+ minValue+" and it's index is: "+ indexOfMin);
+            int minValue = Collections.min(sumOfPrizesArray);
+            int indexOfMin = sumOfPrizesArray.indexOf(minValue);
 //            Assign the largest prize to the winner with the least prize
-        Integer[] toSet = Arrays.copyOf(prizesOutput.get(indexOfMin), prizesOutput.get(indexOfMin).length + 1);
-        toSet[prizesOutput.get(indexOfMin).length] = prizesList.get(0);
-        prizesOutput.set(indexOfMin, toSet);
-        prizesList.remove(0);
+            Integer[] toSet = Arrays.copyOf(prizesOutput.get(indexOfMin), prizesOutput.get(indexOfMin).length + 1);
+            toSet[prizesOutput.get(indexOfMin).length] = prizesList.get(0);
+            prizesOutput.set(indexOfMin, toSet);
+            prizesList.remove(0);
         }
 
 
@@ -85,7 +79,7 @@ public class UnfairLottery {
             for (int j = 0; j < prizesOutput.get(i).length; j++)
                 System.out.print("$" + prizesOutput.get(i)[j] + " ");
 
-            System.out.println(" | sum: " + calculateTmpSum(prizesOutput, i, 0));
+            System.out.println();
         }
 //end of main
     }
@@ -107,17 +101,14 @@ public class UnfairLottery {
         return sum;
     }
 
-public static ArrayList<Integer> populateSumofPrizesArray(ArrayList<Integer[]> prizesOutput, ArrayList<Integer> prizesList,ArrayList<Integer> sumOfPrizesArray ){
-    Integer sumOfPrizes;
-    for (int i = 0; i < prizesOutput.size()  && prizesList.size() > 0; i++) {
-        for (int j = 0; j < prizesOutput.get(i).length; j++){
-            sumOfPrizes = calculateTmpSum(prizesOutput, i, 0);
-            sumOfPrizesArray.set(i, sumOfPrizes);
+    public static ArrayList<Integer> populateSumofPrizesArray(ArrayList<Integer[]> prizesOutput, ArrayList<Integer> prizesList, ArrayList<Integer> sumOfPrizesArray) {
+        Integer sumOfPrizes;
+        for (int i = 0; i < prizesOutput.size() && prizesList.size() > 0; i++) {
+            for (int j = 0; j < prizesOutput.get(i).length; j++) {
+                sumOfPrizes = calculateTmpSum(prizesOutput, i, 0);
+                sumOfPrizesArray.set(i, sumOfPrizes);
+            }
         }
+        return sumOfPrizesArray;
     }
-    return sumOfPrizesArray;
 }
-}
-
-// 1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19
-// One,Two,Three,Four,Five,Six,Seven, Eight, Nine
